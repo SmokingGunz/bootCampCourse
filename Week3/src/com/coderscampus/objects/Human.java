@@ -22,4 +22,6 @@ public class Human {
 		this.eyeColor = eyeColor;
 		
 	}
+	
+	
 }

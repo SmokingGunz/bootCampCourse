@@ -33,6 +33,8 @@ public class RunnableClass {
 		Human christinaPage = new Human();
 		
 		christinaPage.setProperties("female", "5'5\"", "130", "brown");
+		// this is doing the exact same thing as the previous Human objects just using the method created
+		// in the human class
 		
 		System.out.println(christinaPage.getInfo());
 		
