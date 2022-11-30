@@ -23,6 +23,7 @@ public class Week2Exercise {
 		else {
 			System.out.println("Congratulations! You Win!");
 		}
+		scanner.close();
 	}
 	
 }

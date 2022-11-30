@@ -1,6 +1,6 @@
 package com.coderscampus.objects;
 
-public class userInput {
+public class UserInput {
 
 	String input;
 	Integer convertedInput;

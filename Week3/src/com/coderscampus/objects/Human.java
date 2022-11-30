@@ -8,6 +8,18 @@ public class Human {
 	String height;
 	String weight;
 	
+	public Human () {
+		System.out.println("A human is being created");
+	}
+	
+	public Human (String gender, String height, String weight, String eyeColor)  {
+		this.gender = gender;
+		this.height = height;
+		this.weight = weight;
+		this.eyeColor = eyeColor;
+		
+	}
+	
 	// (Visibility modifier), return type, method name, parameters, scope
 	
 	String getInfo () {
