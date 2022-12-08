@@ -15,9 +15,12 @@ public class RunnableClass {
 		for (int i = 0; i<20; i++ ) {
 			System.out.println("Random number is " + random.nextInt(10));
 		}
+		
+		// call the for arg constructor
 		Human someOtherHuman = new Human("brown", "5' 10\"", "160", "brown");
 		System.out.println(someOtherHuman.getInfo());
 		
+		// call the no arg constructor
 		Human ericOwens = new Human();
 		
 		ericOwens.eyeColor = "green";

@@ -3,6 +3,7 @@ package com.coderscampus.inputloop;
 import java.util.Scanner;
 
 public class UserInput {
+	
 
 	public void userInput (){
 		
@@ -10,17 +11,17 @@ public class UserInput {
 		System.out.println("Type a number betwen 50 and 300");
 		
 		while (true) {
-			String input = scan.nextLine();
-			Integer convertedInput = Integer.parseInt(input);
+			Integer input = scan.nextInt();
 			
-		if (convertedInput < 50 || convertedInput > 300) {
+		if (input < 50 || input > 300) {
 		System.out.println("Oops, that number wasns't between 50 and 300, try again: ");
 			
 		}else {
-		System.out.println("The number you typed in was " + convertedInput);
+		System.out.println("The number you typed in was " + input);
+		break;
 		}
 		
-	}	
+	}
 }
 	
 	void userInput2() {
@@ -38,6 +39,6 @@ public class UserInput {
 			i = convert;
 		}
 		System.out.println("The number you typed in was " + i);
-	
+	scan.close();
 	}
 }
