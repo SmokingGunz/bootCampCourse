@@ -18,7 +18,6 @@ public class StreamTutorial {
 			  // inputs: Person[John12] --> Person[John20]
 			  // outputs: John12 --> John20
 			  .map(person -> person.getFirstName())
-			  .
 			  .forEach(System.out::println);  // terminal: foreEach, Collect, Reduce
 	}
 
