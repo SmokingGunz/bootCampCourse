@@ -32,8 +32,25 @@ public class UserController {
 		User user = userService.findById(userId);
 
 		model.put("users", Arrays.asList(user));
+		model.put("user", user);
 
 		return "users";
+	}
+
+	@PostMapping("/users/{userId}")
+	public String postUser(@PathVariable Long userId, User user) {
+
+		userService.saveUser(user);
+
+		return "redirect:/users/" + userId;
+	}
+
+	@PostMapping("/users/{userId}/delete") // its listening for a post request to this URL then it will delete the user
+	public String deleteUser(@PathVariable Long userId) {
+
+		userService.delete(userId);
+
+		return "redirect:/users";
 	}
 
 	@GetMapping("/register")
@@ -49,7 +66,7 @@ public class UserController {
 
 		System.out.println(user);
 
-		userService.createUser(user);
+		userService.saveUser(user);
 
 		return "redirect:/register";
 

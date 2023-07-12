@@ -19,17 +19,22 @@ public class UserService {
 
 		return userRepo.findAll();
 	}
-	
+
 	public User findById(Long userId) {
 
 		Optional<User> userOpt = userRepo.findById(userId);
-		
-        return userOpt.orElse(new User());
-    }
 
-	public User createUser(User user) {
+		return userOpt.orElse(new User());
+	}
+
+	public User saveUser(User user) {
 
 		return userRepo.save(user);
+	}
+
+	public void delete(Long userId) {
+
+		userRepo.deleteById(userId);
 	}
 
 }
