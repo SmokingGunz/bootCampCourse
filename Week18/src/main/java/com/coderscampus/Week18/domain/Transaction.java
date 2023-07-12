@@ -19,7 +19,7 @@ public class Transaction {
 	private LocalDateTime transactionDate;
 	private Double amount;
 	private String type;
-	private Account account;  // makes this a foreign key in transactions table in the database
+	private Account account;  // makes this a foreign key in transactions table in the database for One to One relationship
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +56,7 @@ public class Transaction {
 		this.type = type;
 	}
 
-	@ManyToOne   // makes this a foreign key in the database
+	@ManyToOne   // makes this a foreign key in the database for One to One relationship
 	@JoinColumn(name = "account_id")  // overrides the name of the column
 	public Account getAccount() {
 		return account;

@@ -14,7 +14,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity // This represents an entity in the database
-@Table(name = "users") // because user is a reserved table in the database we have to use this name and annotation type
+@Table(name = "users") // because user is a reserved table in the database we have to use this name and
+						// annotation type
 public class User {
 
 	private Long userId;
@@ -79,7 +80,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", name=" + name + "]";
+		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", name=" + name
+				+ ", accounts=" + accounts + ", address=" + address + "]";
 	}
 
 }
