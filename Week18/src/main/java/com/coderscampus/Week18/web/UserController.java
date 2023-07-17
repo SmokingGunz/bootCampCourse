@@ -1,5 +1,6 @@
 package com.coderscampus.Week18.web;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +22,15 @@ public class UserController {
 
 	@GetMapping("/users")
 	public String getAllUsers(ModelMap model) {
+//		List<User> users = userService.findByNameAndUsername("John", "john@doe.com");
+//		List<User> users = userService.findByCreatedDateBetween(LocalDate.of(2023, 1, 1), LocalDate.of(2023, 1, 1));
+		
 		List<User> users = userService.findAll();
 		model.put("users", users);
+		
+		if (users.size() == 1) {
+			model.put("user", users.get(0));
+		}
 		return "users";
 	}
 
