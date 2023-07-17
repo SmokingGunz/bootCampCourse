@@ -27,7 +27,7 @@ public class Address {
 		this.userId = userId;
 	}
 
-	@OneToOne
+	@OneToOne  // this is eager fetching by default
 	@MapsId
 	@JoinColumn(name = "user_id")
 	public User getUser() {

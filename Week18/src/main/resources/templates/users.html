@@ -25,9 +25,9 @@
 		</form>
 		<form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
 			<div>
-                <input type="submit" value="Delete Account" />
-            </div>
-        </form>
+				<input type="submit" value="Delete Account" />
+			</div>
+		</form>
 
 		</form>
 	</div>
@@ -37,6 +37,12 @@
 		<span th:text="${user.username}"></span><br />
 		<span th:text="${user.name}"></span><br />
 		<span th:text="${user.password}"></span><br />
+		<!-- <div th:if="${#lists.size(user.accounts) > 0}"> -->
+		<div th:each="account : ${user.accounts}">
+			<span th:text="${account.accountName}"></span>
+		</div>
+		<!-- </div> -->
+
 		<hr />
 
 	</div>

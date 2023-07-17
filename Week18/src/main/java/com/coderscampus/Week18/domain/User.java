@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +25,8 @@ public class User {
 	private String password;
 	private String name;
 	private LocalDate createdDate;
-	private List<Account> accounts = new ArrayList<>();
+	private List<Account> accounts = new ArrayList<>(); // this is a relationship between user and account a Many to
+														// Many relationship
 	private Address address; // this is a relationship between user and address a One to One relationship
 
 	@Id // this makes the primary key
@@ -61,7 +63,9 @@ public class User {
 		this.name = name;
 	}
 
-	@ManyToMany
+	// this is a relationship between user and account Many to Many relationship
+	// should utilize lazy loading or lazy fetching
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "user_account", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "account_id"))
 	public List<Account> getAccounts() {
 		return accounts;
@@ -71,7 +75,7 @@ public class User {
 		this.accounts = accounts;
 	}
 
-	@OneToOne(mappedBy = "user")
+	@OneToOne(mappedBy = "user") // should be EAGER fetching by default
 	public Address getAddress() {
 		return address;
 	}
@@ -79,11 +83,11 @@ public class User {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
+
 	public LocalDate getCreatedDate() {
-        return createdDate;
-    }
-	
+		return createdDate;
+	}
+
 	public void setCreatedDate(LocalDate createdDate) {
 		this.createdDate = createdDate;
 	}
@@ -92,6 +96,31 @@ public class User {
 	public String toString() {
 		return "User [userId=" + userId + ", username=" + username + ", password=" + password + ", name=" + name
 				+ ", accounts=" + accounts + ", address=" + address + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((userId == null) ? 0 : userId.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (userId == null) {
+			if (other.userId != null)
+				return false;
+		} else if (!userId.equals(other.userId))
+			return false;
+		return true;
 	}
 
 }
