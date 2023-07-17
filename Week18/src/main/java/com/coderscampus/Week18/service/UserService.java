@@ -11,32 +11,32 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepo;
+	@Autowired
+	private UserRepository userRepo;
 
-    public List<User> findAll() {
+	public List<User> findAll() {
 
-        return userRepo.findAll();
-    }
+		return userRepo.findAll();
+	}
 
-    public User findById(Long userId) {
+	public User findById(Long userId) {
 
-        Optional<User> userOpt = userRepo.findById(userId);
+		Optional<User> userOpt = userRepo.findById(userId);
 
-        return userOpt.orElse(new User());
-    }
+		return userOpt.orElse(new User());
+	}
 
-    public User saveUser(User user) {
+	public User saveUser(User user) {
 
-        return userRepo.save(user);
-    }
+		return userRepo.save(user);
+	}
 
-    public void delete(Long userId) {
+	public void delete(Long userId) {
 
-        userRepo.deleteById(userId);
-    }
+		userRepo.deleteById(userId);
+	}
 
-    // method to find user by username
+	// method to find user by username
 //    public User findByUsername(String username) {
 //
 //        return userRepo.findByUsername(username);
