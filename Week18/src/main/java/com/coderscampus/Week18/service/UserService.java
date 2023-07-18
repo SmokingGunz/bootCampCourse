@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coderscampus.Week18.domain.Account;
+import com.coderscampus.Week18.domain.Address;
 import com.coderscampus.Week18.domain.User;
 import com.coderscampus.Week18.repository.AccountRepository;
 import com.coderscampus.Week18.repository.UserRepository;
@@ -18,9 +19,9 @@ public class UserService {
 
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
-    private AccountRepository accountRepo;
+	private AccountRepository accountRepo;
 
 	public Set<User> findAll() {
 
@@ -34,24 +35,41 @@ public class UserService {
 		return userOpt.orElse(new User());
 	}
 
+	// method to save user and account information
 	public User saveUser(User user) {
-		
+
 		if (user.getUserId() == null) {
-			
+
 			Account checking = new Account();
 			checking.setAccountName("Checking Account");
 			checking.getUsers().add(user);
+			user.getAccounts().add(checking);
+			accountRepo.save(checking);
 			Account savings = new Account();
 			savings.setAccountName("Savings Account");
 			savings.getUsers().add(user);
-			
-			
-			user.getAccounts().add(checking);
 			user.getAccounts().add(savings);
-			
-			accountRepo.save(checking);
-            accountRepo.save(savings);
-			
+			accountRepo.save(savings);
+
+		}
+		// CascadeTypes => PERSIST, MERGE, REMOVE
+		// PERSIST new User() <-> new Address() --> saveUser()
+		// MERGE existingUser() -> new/updating Address() --> saveUser()
+		// REMOVE existingUser() -> setAddress(null) --> saveUser
+
+		if (user.getAddress() == null) {
+
+			Address address = new Address();
+			address.setAddressLine1("123 Fake Street");
+			address.setAddressLine2("Unit 4");
+			address.setCity("New York");
+			address.setReqion("New York");
+			address.setCountry("United States");
+			address.setZipCode("123455");
+			address.setUser(user);
+			address.setUserId(user.getUserId());
+
+			user.setAddress(address);
 		}
 
 		return userRepo.save(user);

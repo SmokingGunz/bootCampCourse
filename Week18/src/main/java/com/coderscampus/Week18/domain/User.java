@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,8 +26,7 @@ public class User {
 	private String password;
 	private String name;
 	private LocalDate createdDate;
-	private List<Account> accounts = new ArrayList<>(); // this is a relationship between user and account a Many to
-														// Many relationship
+	private List<Account> accounts = new ArrayList<>(); // this is a relationship between user and account a Many to Many relationship
 	private Address address; // this is a relationship between user and address a One to One relationship
 
 	@Id // this makes the primary key
@@ -75,7 +75,7 @@ public class User {
 		this.accounts = accounts;
 	}
 
-	@OneToOne(mappedBy = "user") // should be EAGER fetching by default
+	@OneToOne(mappedBy = "user", cascade = CascadeType.MERGE) // should be EAGER fetching by default
 	public Address getAddress() {
 		return address;
 	}
