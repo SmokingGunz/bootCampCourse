@@ -75,7 +75,7 @@ public class User {
 		this.accounts = accounts;
 	}
 
-	@OneToOne(mappedBy = "user", cascade = CascadeType.MERGE) // should be EAGER fetching by default
+	@OneToOne(mappedBy = "user", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true) // should be EAGER fetching by default
 	public Address getAddress() {
 		return address;
 	}
