@@ -37,8 +37,9 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((request) -> {
-			request.requestMatchers("/products").authenticated()
-			       .anyRequest().permitAll();
+			request.requestMatchers("/products").authenticated()  // this would permit access to authenticated users only
+//			       .anyRequest().permitAll(); // this would permit all requests
+			       .requestMatchers("/api/v1/users").permitAll(); // this would permit access to just this endpoint for all users
 		})
 //		.userDetailsService(userDetailsService())
 		.authenticationProvider(authenticationProvider())
