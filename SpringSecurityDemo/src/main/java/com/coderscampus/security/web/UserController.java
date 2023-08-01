@@ -3,6 +3,7 @@ package com.coderscampus.security.web;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,11 +24,13 @@ public class UserController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<User> createUser(User user) {
+	public ResponseEntity<User> createUser(@RequestBody User user) {
 
-		User newUser = new User(user.getPassword(), passwordEncoder.encode(user.getPassword()));
+//		User newUser = new User(user.getUsername(), passwordEncoder.encode(user.getPassword()));
 
-		User savedUser = userRepo.save(newUser);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+		User savedUser = userRepo.save(user);
 
 		return ResponseEntity.ok(savedUser);
 	}

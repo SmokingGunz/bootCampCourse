@@ -7,6 +7,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,27 +31,24 @@ public class SecurityConfiguration {
 	// second step
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return new UserService(passwordEncoder(), userRepo);
+		return new UserService(userRepo);
 	}
 	
 	// this is the first step
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests((request) -> {
-			request.requestMatchers("/products").authenticated()  // this would permit access to authenticated users only
+		http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests((request) -> {
+			request
+//			       .requestMatchers("/products").authenticated()  // this would permit access to authenticated users only
 //			       .anyRequest().permitAll(); // this would permit all requests
-			       .requestMatchers("/api/v1/users").permitAll(); // this would permit access to just this endpoint for all users
+			       .requestMatchers("/api/v1/users").permitAll() // this would permit access to just this end point for all users
+			       .anyRequest().authenticated(); // this would permit access to authenticated users only on all requests. Must be logged in to access all other end points. 
 		})
-//		.userDetailsService(userDetailsService())
+//		.userDetailsService(userDetailsService()) // moved this to the AuthenticationProvider method
 		.authenticationProvider(authenticationProvider())
 		.formLogin(Customizer.withDefaults());
 
-// 		http.authorizeHttpRequests().requestMatchers("/public/**").permitAll().anyRequest()
-// 				.hasRole("USER").and()
-// 				// Possibly more configuration ...
-// 				.formLogin() // enable form based log in
-// 				// set permitAll for all URLs associated with Form Login
-// 				.permitAll();
+
 		return http.build();
 	}
 	

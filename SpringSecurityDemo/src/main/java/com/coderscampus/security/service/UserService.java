@@ -3,20 +3,16 @@ package com.coderscampus.security.service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.coderscampus.security.domain.User;
 import com.coderscampus.security.repository.UserRepository;
 
 public class UserService implements UserDetailsService {
 
-	private PasswordEncoder passwordEncoder;
-
 	private UserRepository userRepo;
 
-	public UserService(PasswordEncoder passwordEncoder, UserRepository userRepo) {
+	public UserService(UserRepository userRepo) {
 		super();
-		this.passwordEncoder = passwordEncoder;
 		this.userRepo = userRepo;
 	}
 
@@ -32,7 +28,5 @@ public class UserService implements UserDetailsService {
 
 		return user;
 	}
-	
-	
 
 }
