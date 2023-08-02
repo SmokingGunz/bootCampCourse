@@ -8,12 +8,14 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+@Service
 public class JwtService {
 
 	/**
@@ -26,7 +28,7 @@ public class JwtService {
 	private String jwtSigningKey;
 	
 	@Value("${jwt.expirationTimeInMillis}")
-    private long expirationTimeInMillis;
+    private Long expirationTimeInMillis;
 
 	public String generateToken(Map<String, Object> extraClaims, UserDetails user) {
 
@@ -46,4 +48,15 @@ public class JwtService {
         SecretKey hmacShaKeyFor = Keys.hmacShaKeyFor(encodedKey);
         return hmacShaKeyFor;
     }
+
+	public void setJwtSigningKey(String jwtSigningKey) {
+		if (this.jwtSigningKey == null)
+			this.jwtSigningKey = jwtSigningKey;
+	}
+
+	public void setExpirationTimeInMillis(Long expirationTimeInMillis) {
+		if (this.expirationTimeInMillis == null)
+		this.expirationTimeInMillis = expirationTimeInMillis;
+	}
+	
 }

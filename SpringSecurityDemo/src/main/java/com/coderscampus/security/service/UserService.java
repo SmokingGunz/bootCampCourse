@@ -3,10 +3,12 @@ package com.coderscampus.security.service;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.coderscampus.security.domain.User;
 import com.coderscampus.security.repository.UserRepository;
 
+@Service
 public class UserService implements UserDetailsService {
 
 	private UserRepository userRepo;
