@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -19,9 +21,12 @@ import io.jsonwebtoken.security.Keys;
 public class JwtService {
 
 	/**
-	 * What we need to be able to do with JWTs in this class 0. Create JWT signing
-	 * key 1. create / generate the JWT 2. Extract claims (ie get stuff from the
-	 * payload) 3. Verify that the JWT is valid 4. Sign the JWT
+	 * What we need to be able to do with JWTs in this class 
+	 * 0. Create JWT signing key 
+	 * 1. create / generate the JWT 
+	 * 2. Extract claims (ie get stuff from the payload) 
+	 * 3. Verify that the JWT is valid 
+	 * 4. Sign the JWT
 	 */
 
 	@Value("${jwt.signingKey}")
@@ -29,6 +34,13 @@ public class JwtService {
 	
 	@Value("${jwt.expirationTimeInMillis}")
     private Long expirationTimeInMillis;
+	
+	public Claims extractAllClaims(String token) {
+		return Jwts.parserBuilder()
+				   .setSigningKey(getSigningKey())
+				   .build()
+				   .parseClaimsJws(token).getBody();
+	}
 
 	public String generateToken(Map<String, Object> extraClaims, UserDetails user) {
 
@@ -37,6 +49,7 @@ public class JwtService {
 		.setSubject(user.getUsername())
 		.setIssuedAt(new Date(System.currentTimeMillis()))
 		.setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMillis))
+		.setHeaderParam("typ", Header.JWT_TYPE)
 		.signWith(getSigningKey(), SignatureAlgorithm.HS256)
 		.compact();
 		return jwt;
