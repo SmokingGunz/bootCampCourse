@@ -2,9 +2,16 @@ package com.coderscampus.security.security;
 
 import java.io.IOException;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import io.jsonwebtoken.Jwts;
+import com.coderscampus.security.service.JwtService;
+import com.coderscampus.security.service.UserService;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,27 +19,51 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+	private JwtService jwtService;
+	private UserService userService;
+
+	public JwtAuthenticationFilter(JwtService jwtService, UserService userService) {
+		super();
+		this.jwtService = jwtService;
+		this.userService = userService;
+	}
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+
 		// Requests:
 		// Headers -> key/value (Authentication -< Bearer xxx-yyy-zzzz)
-        // Body -> key/value
-		
-		String auth = request.getHeader("Authorization");
-		
-        if (auth!= null && auth.startsWith("Bearer ")) {
-            auth = auth.substring(7);
-        }
-        
-        if (auth!= null && auth.length() > 0) {
-        	String username = Jwts.parser().setSigningKey(SecurityConstants.SECRET.getBytes()).parseClaimsJws(auth).getBody().getSubject();
-            request.setAttribute("username", username);
-            filterChain.doFilter(request, response);
-         
-        }
-		
+		// Body -> key/value
+
+		String authHeader = request.getHeader("Authorization");
+
+		if (authHeader.isEmpty()) {
+			String token = authHeader.substring(7);
+
+			String subject = jwtService.getSubject(token);
+
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+			if (!subject.isEmpty() && authentication == null) {
+
+				UserDetails userDetails = userService.loadUserByUsername(subject);
+
+				if (jwtService.isTokenValid(token, userDetails)) {
+					SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+
+					UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+							userDetails.getPassword());
+
+					securityContext.setAuthentication(auth);
+
+					SecurityContextHolder.setContext(securityContext);
+				}
+			}
+
+		}
+		filterChain.doFilter(request, response);
+
 	}
 
 }
