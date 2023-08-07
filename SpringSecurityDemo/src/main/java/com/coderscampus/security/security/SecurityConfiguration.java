@@ -8,10 +8,12 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.coderscampus.security.repository.UserRepository;
 import com.coderscampus.security.service.UserService;
@@ -21,6 +23,7 @@ import com.coderscampus.security.service.UserService;
 public class SecurityConfiguration {
 	
 	private UserRepository userRepo;
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
 	
 
 	public SecurityConfiguration(UserRepository userRepo) {
@@ -44,8 +47,9 @@ public class SecurityConfiguration {
 			       .requestMatchers("/api/v1/users").permitAll() // this would permit access to just this end point for all users
 			       .anyRequest().authenticated(); // this would permit access to authenticated users only on all requests. Must be logged in to access all other end points. 
 		})
+		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 //		.userDetailsService(userDetailsService()) // moved this to the AuthenticationProvider method
-		.authenticationProvider(authenticationProvider())
+		.authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
 		.formLogin(Customizer.withDefaults());
 
 

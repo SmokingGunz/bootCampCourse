@@ -1,8 +1,10 @@
 package com.coderscampus.security.service;
 
 import java.security.Key;
-import java.sql.Date;
+
+import java.util.*;
 import java.util.Map;
+import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
@@ -40,6 +42,27 @@ public class JwtService {
 				   .setSigningKey(getSigningKey())
 				   .build()
 				   .parseClaimsJws(token).getBody();
+	}
+	
+	public String getSubject(String token) {
+		String subject = extractClaims(token, Claims::getSubject);
+		return subject;
+	}
+	
+	public Boolean isTokenValid(String token, UserDetails user) {
+
+		String subject = getSubject(token);
+		
+		Date expirationDate = extractClaims(token, Claims::getExpiration);
+		
+		return user.getUsername().equalsIgnoreCase(subject) && new Date().before(expirationDate);
+	}
+	
+	public <T> T extractClaims(String token, Function<Claims, T> claimsExtract) {
+		
+		Claims allClaims = extractAllClaims(token);
+		
+        return claimsExtract.apply(allClaims);
 	}
 
 	public String generateToken(Map<String, Object> extraClaims, UserDetails user) {

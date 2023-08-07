@@ -1,6 +1,7 @@
 package com.coderscampus.security.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashMap;
@@ -75,9 +76,78 @@ class JwtServiceTest {
         // Assert
         
         assertEquals("trevor@coderscampus.com", allClaims.getSubject());
+        assertEquals(allClaims.size(), 3);
         
 //        assertTrue(allClaims.getSubject().equals("trevor@coderscampus.com"));
         
 	}
+	
+	@Test
+	@DisplayName("Should extract valid subject from claims")
+    void testExtractSubject() {
+		
+		// arrange, act, assert
+		
+		
+		// Arrange
+        Map<String, Object> extraClaims = new HashMap<>();
+        User user = new User("trevor@coderscampus.com", "abc123");
+        String jwt = sut.generateToken(extraClaims, user);
+        
+        // Act
+        
+        String subject = sut.getSubject(jwt);
+        
+        // Assert
+        
+        assertEquals("trevor@coderscampus.com", subject);
+		
+		
+	}
+	
+	@Test
+	@DisplayName("Should return a valid token")
+    void testValidToken() {
+		
+		// arrange, act, assert
+		
+		
+		// Arrange
+        Map<String, Object> extraClaims = new HashMap<>();
+        User user = new User("trevor@coderscampus.com", "abc123");
+        String jwt = sut.generateToken(extraClaims, user);
+        
+        // Act
+        
+        Boolean tokenValid = sut.isTokenValid(jwt, user);
+        // Assert
+        
+        assertTrue(tokenValid);
+		
+	}
+	
+	@Test
+	@DisplayName("Should return a invalid token")
+    void testInvalidToken() {
+		
+		// arrange, act, assert
+		
+		
+		// Arrange
+        Map<String, Object> extraClaims = new HashMap<>();
+        User validUser = new User("trevor@coderscampus.com", "abc123");
+        User invalidUser = new User("trevor.page@coderscampus.com", "abc123");
+
+        String jwt = sut.generateToken(extraClaims, validUser);
+        
+        // Act
+        
+        Boolean tokenValid = sut.isTokenValid(jwt, invalidUser);
+        // Assert
+        
+        assertFalse(tokenValid);
+		
+	}
+	
 
 }
