@@ -46,6 +46,7 @@ public class SecurityConfiguration {
 //			       .requestMatchers("/products").authenticated()  // this would permit access to authenticated users only
 //			       .anyRequest().permitAll(); // this would permit all requests
 			       .requestMatchers("/api/v1/users").permitAll() // this would permit access to just this end point for all users
+			       .requestMatchers("/api/v1/users/**").permitAll()
 			       .anyRequest().authenticated(); // this would permit access to authenticated users only on all requests. Must be logged in to access all other end points. 
 		})
 		.sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
