@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.coderscampus.security.service.JwtService;
@@ -17,6 +19,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	private JwtService jwtService;
@@ -38,14 +41,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 		String authHeader = request.getHeader("Authorization");
 
-		if (authHeader.isEmpty()) {
+		if (StringUtils.hasText(authHeader)) {
 			String token = authHeader.substring(7);
 
 			String subject = jwtService.getSubject(token);
 
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-			if (!subject.isEmpty() && authentication == null) {
+			if (StringUtils.hasText(subject) && authentication == null) {
 
 				UserDetails userDetails = userService.loadUserByUsername(subject);
 
