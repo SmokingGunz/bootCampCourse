@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.coderscampus.security.domain.RefreshToken;
 import com.coderscampus.security.domain.User;
 import com.coderscampus.security.repository.UserRepository;
 import com.coderscampus.security.response.AuthenticationResponse;
 import com.coderscampus.security.service.JwtService;
+import com.coderscampus.security.service.RefreshTokenService;
 import com.coderscampus.security.service.UserService;
 
 @RestController
@@ -24,14 +26,16 @@ public class UserController {
 	private PasswordEncoder passwordEncoder;
 	private JwtService jwtService;
 	private UserService userService;
+	private RefreshTokenService refreshTokenService;
 
 	public UserController(UserRepository userRepo, PasswordEncoder passwordEncoder, JwtService jwtService,
-			UserService userService) {
+			UserService userService, RefreshTokenService refreshTokenService) {
 		super();
 		this.userRepo = userRepo;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtService = jwtService;
 		this.userService = userService;
+		this.refreshTokenService = refreshTokenService;
 	}
 
 	@PostMapping("")
@@ -44,18 +48,22 @@ public class UserController {
 		User savedUser = userRepo.save(user);
 
 		String accessToken = jwtService.generateToken(new HashMap<>(), savedUser);
+		
+		RefreshToken refreshToken = refreshTokenService.generateRefreshToken(savedUser.getId());
 
-		return ResponseEntity.ok(new AuthenticationResponse(savedUser.getUsername(), accessToken));
+		return ResponseEntity.ok(new AuthenticationResponse(savedUser.getUsername(), accessToken, refreshToken.getRefreshToken()));
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> singInUser(@RequestBody User user) {
 
-		UserDetails loggedInUser = userService.loadUserByUsername(user.getUsername());
+		User loggedInUser = (User) userService.loadUserByUsername(user.getUsername());
 
 		String accessToken = jwtService.generateToken(new HashMap<>(), loggedInUser);
+		
+		RefreshToken refreshToken = refreshTokenService.generateRefreshToken(loggedInUser.getId());
 
-		return ResponseEntity.ok(new AuthenticationResponse(loggedInUser.getUsername(), accessToken));
+		return ResponseEntity.ok(new AuthenticationResponse(loggedInUser.getUsername(), accessToken, refreshToken.getRefreshToken()));
 
 	}
 }
