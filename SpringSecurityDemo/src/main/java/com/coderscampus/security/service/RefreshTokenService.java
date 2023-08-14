@@ -17,7 +17,7 @@ public class RefreshTokenService {
 	private UserService userService;
 	private RefreshTokenRepository refreshTokenRepo;
 
-	@Value("${jwt.refreshTokenExpirationInMillis")
+	@Value("${jwt.refreshTokenExpirationTimeInMillis}")
 	private Long refreshTokenExpirationInMillis;
 
 	public RefreshTokenService(UserService userService, RefreshTokenRepository refreshTokenRepo) {
@@ -36,6 +36,8 @@ public class RefreshTokenService {
 					new Date(System.currentTimeMillis() + refreshTokenExpirationInMillis));
 
 			refreshTokenRepo.save(refreshToken);
+
+			return refreshToken;
 
 		}
 		return null;
