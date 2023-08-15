@@ -6,8 +6,8 @@
     <script type="text/javascript">
         var name = 'Trevor page'
         var age = 37
-        alert('Hello World! My name is ' + name + ', age is ' + age + '.')
-        alert(`Hello world! My name is ${name}, age is ${age}.`)
+        // alert('Hello World! My name is ' + name + ', age is ' + age + '.')
+        // alert(`Hello world! My name is ${name}, age is ${age}.`)
 
 
         var car
@@ -30,13 +30,13 @@
                 'line1': '123 Fake street',
                 'line2': 'Suite 123',
                 'city': 'Fake city',
-              'state': 'Fake state',
+                'state': 'Fake state',
             }
         }
         console.log(`the value of person is ${person}, the data type is ${typeof person}`)
         console.log(person)
 
-        
+
 
     </script>
 </head>
@@ -50,8 +50,13 @@
         Password: <input type="password" th:field="${user.password}" />
     </div>
     <div>
-        <button>Login</button>
+        <button type="button" id="submitBtn">Submit</button>
     </div>
+    <script type="text/javascript">
+        var submitBtn = document.querySelector('#submitBtn') // this selects the button by id and assigns it to a variable
+        console.log(`submitBtn is : `)
+        console.log(submitBtn)
+    </script>
 </body>
 
 </html>
