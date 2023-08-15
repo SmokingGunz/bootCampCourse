@@ -3,7 +3,7 @@
 
 <head>
     <title>Login</title>
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         var name = 'Trevor page'
         var age = 37
         // alert('Hello World! My name is ' + name + ', age is ' + age + '.')
@@ -35,10 +35,7 @@
         }
         console.log(`the value of person is ${person}, the data type is ${typeof person}`)
         console.log(person)
-
-
-
-    </script>
+    </script> -->
 </head>
 
 <body>
@@ -54,27 +51,37 @@
     </div>
     <script type="text/javascript">
         var submitBtn = document.querySelector('#submitBtn') // this selects the button by id and assigns it to a variable
-        console.log(`submitBtn is : `)
-        console.log(submitBtn)
+        // console.log(`submitBtn is : `)
+        // console.log(submitBtn)
 
-        submitBtn.addEventListener('click', submitBtnClick)
+        submitBtn.addEventListener('click', (event) => {
+            var username = document.querySelector('#username')
+            var password = document.querySelector('#password')
 
-        submitBtn.addEventListener('mouseover', function () {
-            alert(`Hey! I've been moused over!`)
+            if (username.value == '' || password.value == '') {
+                alert('Please enter your username and password')
+            } else {
+                console.log('Inputs look valid, proceed with submission')
+            }
 
         })
 
-        var usernameTextBox = document.querySelector('#username') // this selects the username
+        // submitBtn.addEventListener('mouseover', function () {
+        //     alert(`Hey! I've been moused over!`)
 
-        // different way to add an event listener function with lambda function
-        usernameTextBox.addEventListener('focus', () => console.log(`The username Text Box now has focus!`)
-        )
-        
-        // public void myFunction() {}  -- this is java code for comparison purposes
-        function submitBtnClick() {
-            alert("Hey! I've been clicked")
+        // })
 
-        }
+        // var usernameTextBox = document.querySelector('#username') // this selects the username
+
+        // // different way to add an event listener function with lambda function
+        // usernameTextBox.addEventListener('focus', () => console.log(`The username Text Box now has focus!`)
+        // )
+
+        // // public void myFunction() {}  -- this is java code for comparison purposes
+        // function submitBtnClick() {
+        //     alert("Hey! I've been clicked")
+
+        // }
     </script>
 </body>
 
