@@ -1,25 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
-    <head>
-        <title>Login</title>
-        <script type="text/javascript">
-            var name = 'Trevor page'
-            var age = 37
-            alert('Hello World! My name is ' + name+ ', age is ' + age + '.')
-            alert(`Hello world! My name is ${name}, age is ${age}.`)
-            
-        </script>
-    </head>
-    <body>
-        <h1>Login Below</h1>
-        <div>
-            Username: <input type="text" th:field="${user.username}"/>
-        </div>
-        <div>
-            Password: <input type="password" th:field="${user.password}"/>
-        </div>
-        <div>
-            <button>Login</button>
-        </div>
-    </body>
+
+<head>
+    <title>Login</title>
+    <script type="text/javascript">
+        var name = 'Trevor page'
+        var age = 37
+        alert('Hello World! My name is ' + name + ', age is ' + age + '.')
+        alert(`Hello world! My name is ${name}, age is ${age}.`)
+
+
+        var car
+        var telsa = null
+
+        console.log(`The value of "car" is: ${car}, the data type is ${typeof car}`) // undefined
+        console.log(`The value of "telsa" is: ${telsa}, the data type is ${typeof telsa}`) // null
+        console.log(`The value of "age" is: ${age}, the data type is ${typeof age}`)
+        console.log(`The value of "name" is: ${name}, the data type is ${typeof name}`)
+        console.log(`What is 5 + 10 = ${5 + 10}`)
+
+        var addition = 5 + 15
+        console.log(`addition = ${addition}`)
+
+        var person = {
+            'firstName': 'trevor',
+            'lastName': 'page',
+            'age': '37',
+            'address': {
+                'line1': '123 Fake street',
+                'line2': 'Suite 123',
+                'city': 'Fake city',
+              'state': 'Fake state',
+            }
+        }
+        console.log(`the value of person is ${person}, the data type is ${typeof person}`)
+        console.log(person)
+
+        
+
+    </script>
+</head>
+
+<body>
+    <h1>Login Below</h1>
+    <div>
+        Username: <input type="text" th:field="${user.username}" />
+    </div>
+    <div>
+        Password: <input type="password" th:field="${user.password}" />
+    </div>
+    <div>
+        <button>Login</button>
+    </div>
+</body>
+
 </html>
