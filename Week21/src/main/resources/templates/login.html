@@ -59,6 +59,17 @@
 
         submitBtn.addEventListener('click', submitBtnClick)
 
+        submitBtn.addEventListener('mouseover', function () {
+            alert(`Hey! I've been moused over!`)
+
+        })
+
+        var usernameTextBox = document.querySelector('#username') // this selects the username
+
+        // different way to add an event listener function with lambda function
+        usernameTextBox.addEventListener('focus', () => console.log(`The username Text Box now has focus!`)
+        )
+        
         // public void myFunction() {}  -- this is java code for comparison purposes
         function submitBtnClick() {
             alert("Hey! I've been clicked")
