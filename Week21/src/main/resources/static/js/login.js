@@ -1,6 +1,7 @@
 var submitBtn = document.querySelector('#submitBtn') // this selects the button by id and assigns it to a variable
 // console.log(`submitBtn is : `)
 // console.log(submitBtn)
+var username = document.querySelector('#username')
 var users = []
 
 submitBtn.addEventListener('click', (event) => {
@@ -20,6 +21,15 @@ submitBtn.addEventListener('click', (event) => {
         users.push(user)
     }
 })
+
+username.addEventListener('blur', () => {
+
+    fetch('http://localhost:8080/user/exists')
+        .then((response) => {
+            console.log(response)
+        })
+})
+
 
 // submitBtn.addEventListener('mouseover', function () {
 //     alert(`Hey! I've been moused over!`)
