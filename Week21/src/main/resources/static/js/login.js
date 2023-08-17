@@ -1,7 +1,6 @@
 var submitBtn = document.querySelector('#submitBtn') // this selects the button by id and assigns it to a variable
 // console.log(`submitBtn is : `)
 // console.log(submitBtn)
-var username = document.querySelector('#username')
 var users = []
 
 submitBtn.addEventListener('click', (event) => {
@@ -23,11 +22,34 @@ submitBtn.addEventListener('click', (event) => {
 })
 
 username.addEventListener('blur', () => {
+    var username = document.querySelector('#username')
+    var password = document.querySelector('#password')
 
-    fetch('http://localhost:8080/user/exists')
-        .then((response) => {
-            console.log(response)
+    var user = {
+        "username": username.value,
+        "password": password.value
+    }
+
+
+    //This is how to fetch with PostMapping
+    fetch(`http://localhost:8080/user/exists`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
         })
+
+    // this is how to fetch with GetMapping
+    // fetch(`http://localhost:8080/user/exists?username=${username.value}&password=${password.value}`)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //         console.log(data)
+    //     })
 })
 
 
