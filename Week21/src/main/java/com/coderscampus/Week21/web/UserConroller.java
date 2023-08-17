@@ -1,5 +1,6 @@
 package com.coderscampus.Week21.web;
 
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,10 +20,10 @@ public class UserConroller {
 
 		return true;
 	}
-	
+
 	@PostMapping("/exists")
 	public Boolean postExists(@RequestBody User user) {
-		
+
 		System.out.println("Username: " + user.getUsername() + " Password: " + user.getPassword());
 
 		return true;
@@ -37,5 +38,20 @@ public class UserConroller {
 	public Boolean validatePassword(String password) {
 		return false;
 	}
+
+	@GetMapping("/register")
+	public String getCreateUser(ModelMap model) {
+
+		model.put("user", new User());
+
+		return "register";
+	}
+	
+//	@PostMapping("/register")
+//	public String postCreateUser(User user) {
+//		System.out.println(user);
+//		userService.saveUser(user);
+//		return "redirect:/register";
+//	}
 
 }
