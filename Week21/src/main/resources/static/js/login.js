@@ -32,7 +32,7 @@ username.addEventListener('blur', () => {
 
 
     //This is how to fetch with PostMapping
-    fetch(`http://localhost:8080/user/exists`, {
+    fetch(`/user/exists`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

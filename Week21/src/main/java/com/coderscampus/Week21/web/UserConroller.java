@@ -31,10 +31,10 @@ public class UserConroller {
 	@PostMapping("/exists")
 	@ResponseBody
 	public Boolean postExists(@RequestBody User user) {
-
-		System.out.println("Username: " + user.getUsername() + " Password: " + user.getPassword());
-
-		return true;
+		
+		user = userService.findByUsername(user.getUsername());
+		
+		return (user != null);
 	}
 
 	@GetMapping("/validateusername")
