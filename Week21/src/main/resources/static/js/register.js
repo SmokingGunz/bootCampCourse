@@ -1,5 +1,29 @@
 var usernameTextBox = document.querySelector(`#username`);
 
+// this is for demonstration purposes only
+function myPromise() {
+
+    return new Promise((resolve, reject) => {
+        let i = 2;
+
+        if (i === 1) {
+            resolve("hey, i === 1, so we're cool");
+        } else {
+            reject("Absolute fail: i is not 1, boooo");
+        }
+
+    })
+}
+
+myPromise().then((data) => {
+    console.log(data);
+}).catch((error) => {
+    console.log("Absolute fail: i is not 1, boooo");
+});
+
+
+// HOW TO USE PROMISES IN JS
+
 usernameTextBox.addEventListener('blur', () => {
     var user = {
         'username': usernameTextBox.value,
@@ -14,35 +38,87 @@ usernameTextBox.addEventListener('blur', () => {
         .then((response) => response.json())
         .then((data) => {
             if (data === true) {
-                console.log('username already exists')
-                usernameTextBox.focus()
-                usernameTextBox.select()
-                showErrorAnimation(() => {
-                    // animation is completed at this point
-                    console.log("we are now in the callback function")
-
-                    usernameTextBox.style.backgroundColor = `rgb(255, 255, 255)`;
-                })
+                console.log('username already exists');
+                usernameTextBox.focus();
+                usernameTextBox.select();
+                return showErrorAnimation();
             }
         })
+        .then((message) => {
+            console.log("we are now in the Promise's then method after the animation");
+            console.log(message);
+            usernameTextBox.style.backgroundColor = `rgb(255, 255, 255)`;
+        });
 });
 
-function showErrorAnimation(callback) {
-    console.log("We're in the showErrorAnimation function");
 
-    var i = 255;
+function showErrorAnimation() {
+    return new Promise((resolve) => {
+        console.log("We're in the showErrorAnimation function");
 
-    var animationInterval = setInterval(() => {
-        i--;
+        var i = 255;
 
-        // Decrease the green and blue components from 255 to 0
-        usernameTextBox.style.backgroundColor = `rgb(255, ${i}, ${i})`;
+        var animationInterval = setInterval(() => {
+            i--;
 
-        if (i === 0) {
-            clearInterval(animationInterval);
-            callback();
-        }
-    }, 1);
+            // Decrease the green and blue components from 255 to 0
+            usernameTextBox.style.backgroundColor = `rgb(255, ${i}, ${i})`;
 
-    console.log("Done executing the showErrorAnimation function");
+            if (i === 0) {
+                clearInterval(animationInterval);
+                // console.log("Done executing the showErrorAnimation function");
+                resolve("Done executing the showErrorAnimation function");
+            }
+        }, 1);
+    });
 }
+
+
+// HOW TO USE CALLBACK FUNCTION IN JS
+
+// usernameTextBox.addEventListener('blur', () => {
+//     var user = {
+//         'username': usernameTextBox.value,
+//     }
+//     fetch('/user/exists', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify(user)
+//     })
+//         .then((response) => response.json())
+//         .then((data) => {
+//             if (data === true) {
+//                 console.log('username already exists')
+//                 usernameTextBox.focus()
+//                 usernameTextBox.select()
+//                 showErrorAnimation(() => {
+//                     // animation is completed at this point
+//                     console.log("we are now in the callback function")
+
+//                     usernameTextBox.style.backgroundColor = `rgb(255, 255, 255)`;
+//                 })
+//             }
+//         })
+// });
+
+// function showErrorAnimation(callback) {
+//     console.log("We're in the showErrorAnimation function");
+
+//     var i = 255;
+
+//     var animationInterval = setInterval(() => {
+//         i--;
+
+//         // Decrease the green and blue components from 255 to 0
+//         usernameTextBox.style.backgroundColor = `rgb(255, ${i}, ${i})`;
+
+//         if (i === 0) {
+//             clearInterval(animationInterval);
+//             callback();
+//         }
+//     }, 1);
+
+//     console.log("Done executing the showErrorAnimation function");
+// }
