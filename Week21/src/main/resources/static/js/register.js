@@ -2,19 +2,17 @@ var usernameTextBox = document.querySelector(`#username`);
 var eyeIcons = document.querySelectorAll(`.fa-eye`);
 
 eyeIcons.forEach((eyeIcon) => {
-
     eyeIcon.addEventListener('click', () => {
-
         if (eyeIcon.classList.contains('fa-eye')) {
             eyeIcon.classList.replace('fa-eye', 'fa-eye-slash');
-            if  (eyeIcon.getAttribute('id') === 'passwordEyeIcon') {
+            if (eyeIcon.getAttribute('id') === 'passwordEyeIcon') {
                 document.querySelector(`#password`).type = 'text';
             } else {
                 document.querySelector(`#confirmPassword`).type = 'text';
             };
         } else {
             eyeIcon.classList.replace('fa-eye-slash', 'fa-eye');
-            if  (eyeIcon.getAttribute('id') === 'passwordEyeIcon') {
+            if (eyeIcon.getAttribute('id') === 'passwordEyeIcon') {
                 document.querySelector(`#password`).type = 'password';
             } else {
                 document.querySelector(`#confirmPassword`).type = 'password';
@@ -29,29 +27,38 @@ usernameTextBox.addEventListener('blur', () => {
     var user = {
         'username': usernameTextBox.value,
     }
-    fetch('/user/exists', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(user)
-    })
-    .then((response) => response.json())
-    .then((data) => {
-        if (data === true) {
-            console.log('username already exists');
-            usernameTextBox.focus();
-            usernameTextBox.select();
-            return showErrorAnimation();
+// call async function
+    asyncCheckIfUserExists(user);
+});
+
+async function asyncCheckIfUserExists(user) {
+    let something = await checkIfUserExists(user);
+        console.log('check code here');
+    }
+
+   async function checkIfUserExists(user) {
+        let response = await fetch('/user/exists', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        let data = await response.json()
+        // .then((response) => response.json())
+        // .then((data) => {
+            if (data === true) {
+                console.log('username already exists');
+                usernameTextBox.focus();
+                usernameTextBox.select();
+                return showErrorAnimation()
+                .then((message) => {
+                    console.log("we are now in the Promise's then method after the animation");
+                    console.log(message);
+                    usernameTextBox.style.backgroundColor = `rgb(255, 255, 255)`;
+                });
+            }
         }
-    })
-        .then((message) => {
-            console.log("we are now in the Promise's then method after the animation");
-            console.log(message);
-            usernameTextBox.style.backgroundColor = `rgb(255, 255, 255)`;
-        });
-    });
-    
     
     function showErrorAnimation() {
         return new Promise((resolve) => {
